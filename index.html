@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>裁剪Demo</title>
+    <link href="Bootstrap-3.3.6/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="Jcrop-0.9.12/css/jquery.Jcrop.css" rel="stylesheet" type="text/css">
+    <link href="uploadinput.css" rel="stylesheet" type="text/css">
+    <link href="Bootstrap-3.3.6/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <style>
+
+    </style>
+
+
+</head>
+<body>
+<table class="table-bordered table-responsive">
+    <tr>
+        <td>名字</td>
+        <td>洒洒</td>
+        <td>事的发生地方</td>
+        <td><a id="1">图片</a></td>
+    </tr>
+</table>
+
+<a>
+    <i class="fa fa-weibo"></i> 按钮</a><a>
+    <i class="fa fa-wifi"></i> SB</a>
+
+<div class="modal fade" id="qrModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <form id="updateForm" role="form" class="form-horizontal" enctype="multipart/form-data"
+                  action="/preViewImage">
+                <div class="modal-body">
+                    <!-- 表单具体内容 -->
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">生成网址:</label>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <textarea class="form-control" rows="3" cols="3" id="qrResult"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-5 col-md-offset-3">
+                                <button id="url1" class="btn btn-success">网址一</button>
+                                <button id="url2" class="btn btn-success">网址一</button>
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">取消
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">门店图片:</label>
+                            <div class="col-md-8">
+                                <div class="form-group-inline">
+                                    <div class="uploader black">
+                                        <input type="file" id="shopInputFile" name="shopImg"/>
+                                        <input type="button" class="button" value="选择图片"/>
+                                    </div>
+                                </div>
+                                <img id="shopImgPreview" src="">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="button" class="button" id="preViewShopBtn" value="预览"/>
+                                <input type="submit" class="button" value="上传"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">店员图片:</label>
+                            <div class="col-md-8">
+                                <div class="form-group-inline">
+                                    <div class="uploader black">
+                                        <input type="text" class="filename" readonly/>
+                                        <input type="button" class="button" value="选择图片"/>
+                                        <input type="file" id="waiterInputFile" name="waiterImg" readonly/>
+                                    </div>
+                                </div>
+                                <img id="waiterImgPreview" src="">
+                            </div>
+
+                            <div class="col-md-2">
+                                <input type="button" class="button" id="preViewWaiterBtn" value="预览"/>
+                                <input type="submit" class="button" value="上传"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src=jquery-2.0.3.min.js></script>
+<script src="Bootstrap-3.3.6/js/bootstrap.js"></script>
+<script src="Jcrop-0.9.12/js/jquery.Jcrop.js"></script>
+<script src="Jcrop-0.9.12/js/jquery.color.js"></script>
+<script>
+    jQuery(function ($) {
+        var jcropApiShop, jcropApiWaiter;//门店
+        $('#shopImgPreview').Jcrop({
+                allowSelect: true,
+                allowMove: true,
+                allowResize: true,
+                baseClass: 'jcrop',
+                trackDocument: true,
+                setSelect: [0, 0, 20, 40],
+                aspectRatio: 2 / 1
+            },
+            function () {
+                jcropApiShop = this;
+            }
+        );
+        $('#waiterImgPreview').Jcrop({
+                allowSelect: true,
+                allowMove: true,
+                allowResize: true,
+                baseClass: 'jcrop',
+                trackDocument: true,
+                setSelect: [0, 0, 20, 40],
+                aspectRatio: 2 / 1
+            },
+            function () {
+                jcropApiWaiter = this;
+            }
+        );
+        $("#1").click(function (e) {
+            e.preventDefault();
+            $("#qrModal").modal("show");
+        });
+
+
+        $("#shopInputFile").change(function () {
+            $(this).parents(".uploader").find(".filename").val($(this).val());
+            url = window.URL.createObjectURL(this.files.item(0));
+            $("#shopImgPreview").attr("src", url);
+            jcropApiShop.setImage(url);
+        });
+        $("#waiterInputFile").change(function () {
+            $(this).parents(".uploader").find(".filename").val($(this).val());
+            url = window.URL.createObjectURL(this.files.item(0));
+            $("#waiterImgPreview").attr("src", url);
+            jcropApiWaiter.setImage(url);
+        });
+
+        $("input[type=file]").each(function () {
+            if ($(this).val() == "") {
+                $(this).parents(".uploader").find(".filename").val("请选择文件...");
+            }
+        });
+
+
+    })
+    $("#previewBtn").click(function (e) {
+        e.preventDefault();
+        alert();
+    });
+
+</script>
+</html>

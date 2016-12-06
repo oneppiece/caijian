@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>裁剪Demo</title>
+    <link href="Bootstrap-3.3.6/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="Jcrop-0.9.12/css/jquery.Jcrop.css" rel="stylesheet" type="text/css">
+    <link href="uploadinput.css" rel="stylesheet" type="text/css">
+
+    <style>
+
+    </style>
+
+
+</head>
+<body>
+<table class="table-bordered table-responsive">
+    <tr>
+        <td>名字</td>
+        <td>洒洒</td>
+        <td>事的发生地方</td>
+        <td><a id="1">图片</a></td>
+    </tr>
+</table>
+
+<div class="modal fade" id="imgModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+                <div class="uploader black">
+                    <input type="text" class="filename" readonly/>
+                    <input type="button" name="file" class="button" value="选择图片"/>
+                    <input type="file" size="30"/>
+                </div>
+                <img id="element_id" src="">
+                <button id="ok">确定</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+<script src=jquery-2.0.3.min.js></script>
+<script src="Bootstrap-3.3.6/js/bootstrap.js"></script>
+<script src="Jcrop-0.9.12/js/jquery.Jcrop.js"></script>
+<script src="Jcrop-0.9.12/js/jquery.color.js"></script>
+<script>
+    jQuery(function ($) {
+        $("#1").click(function (e) {
+            e.preventDefault();
+            $("#imgModel").modal("show");
+        });
+        $("#ok").click(function (e) {
+            e.preventDefault();
+        });
+
+
+        $("input[type=file]").change(function () {
+            $(this).parents(".uploader").find(".filename").val($(this).val());
+            url = window.URL.createObjectURL(this.files.item(0));
+            $("#element_id").attr("src", url);
+            var jcropApi;
+            $('#element_id').Jcrop({
+                allowSelect: true,
+                allowMove: true,
+                allowResize: false,
+                baseClass: 'jcrop',
+                trackDocument: true,
+                setSelect: [60, 70, 540, 330],
+                // aspectRatio: 10 / 10，
+            }, function () {
+                jcropApi = this;
+            });
+        });
+
+        $("input[type=file]").each(function () {
+            if ($(this).val() == "") {
+                $(this).parents(".uploader").find(".filename").val("请选择文件...");
+            }
+        });
+
+
+    });
+
+
+</script>
+</html>
